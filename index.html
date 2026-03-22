@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinic Tracker</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: #fff;
+            padding: 25px 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input,
+        select,
+        textarea,
+        button {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        select:focus,
+        input:focus,
+        textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Clinic Daily Tracker</h2>
+        <form id="clinicForm">
+            <select name="type" required>
+                <option value="" disabled selected>Select Type</option>
+                <option value="Income">Income</option>
+                <option value="Expense">Expense</option>
+            </select>
+
+            <input type="number" name="amount" placeholder="Amount" required />
+
+            <input type="text" name="patient" placeholder="Patient Name (optional)" />
+
+            <textarea name="notes" placeholder="Notes (optional)" rows="2"></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById("clinicForm");
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbzZ7_Hrd8CXEoO7XMolHtK1v1WyXoiGiuVjStbWR6L25VtE9TR6aQv3nnG0A9ZqIEEj/exec"; // Replace with your Apps Script /exec URL
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const data = {
+                type: this.type.value,
+                amount: this.amount.value,
+                patient: this.patient.value,
+                notes: this.notes.value
+            };
+
+            fetch(webAppUrl, {
+                method: "POST",
+                mode: "no-cors", // ⚡ prevents CORS blocking
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+                .then(() => {
+                    alert("Saved successfully!");
+                    form.reset();
+                })
+                .catch(err => alert("Error: " + err));
+        });
+    </script>
+
+</body>
+
+</html>
